@@ -1,0 +1,91 @@
+body {
+	font-family: Helvetica;
+	font-size: 12pt;
+}
+ul {
+	margin: 0px;
+	padding: 0px;
+}
+li {
+	margin: 0px;
+	padding: 0px;
+}
+#doctors-container {
+	float:right;
+}
+#enemies, .enemies{
+	border: solid black 1px;
+	width: 300px;
+}
+#doctors, .doctors {
+	border: solid black 1px;
+	width: 400px;
+}
+.who li img {
+	width: 100px;
+	float:left;
+	margin: 0px 20px;
+}
+.who li {
+	clear: left;
+	list-style: none;
+	margin: 20px 0px;
+	padding-top: 20px;
+}
+#doctors li img {
+	height: auto;
+	float: right;
+}
+#doctors li {
+	clear: right;
+}
+.who h2 {
+	padding-left: 20px;
+	font-size: 14pt;
+}
+.loading {
+	background-image: url(../images/ajax-loader.gif);
+	background-position: center;
+	background-repeat: no-repeat;
+	height: 100px;
+	width: 100px;
+}
+.actions {
+	position: absolute;
+	top: 80px;
+	left: 340px;
+	padding-top: 20px;
+	width: 200px;
+	
+}
+.notice {
+	position: absolute;
+	top: 260px;
+	left: 340px;
+	color: white;
+	background-color: #BE1B34;
+	width: 200px;
+}
+.rounded {
+	border: solid black 2px;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+	padding: 10px;
+}
+.orange {
+	background-color: #F4A31F;
+}
+.source {
+	color: grey;
+	font-size: 11pt;
+}
+#doctorDetail {
+	background-color: #fdf3cd;
+	overflow: auto;
+	padding: 20px;
+	border: solid black 2px;
+}
+#doctorDetail img {
+	float:right;
+	height: 16em;
+}
