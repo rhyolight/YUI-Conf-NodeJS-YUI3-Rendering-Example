@@ -5,13 +5,24 @@ Y.on('all-modules-loaded', function() {
 		var $h2 = $docNode.one('h2'),
 			id = $docNode.get('id').split('-')[1];
 		$h2.on('click', function(evt) {
+
+			var params = {id: id, renderOnNode: true},
+				old = Y.one('#doctorDetail'),
+				$detailNode = Y.one('#doctorDetail-container'),
+				renderOnNode = Y.one('#renderDialogOnServer').get('checked'),
+				params = {id: id, renderOnNode: true, renderOnNode: renderOnNode};
+
 			evt.halt();
-			$detailNode = Y.one('#doctorDetail-container');
-			var old = Y.one('#doctorDetail');
+
 			if (old) {
 				old.remove();
 			};
-			Y.YUICONF.loadModule('doctorDetail', $detailNode, function(markup) {
+			
+			loadModule('doctorDetail', onModuleLoad, params);
+			
+			function onModuleLoad(moduleType, markup) {
+				var $moduleNode = Y.one('#' + moduleType + '-container');
+				$moduleNode.removeClass('loading ' + moduleType);
 				if (markup) {
 					$detailNode.append(markup);
 				}
@@ -27,7 +38,8 @@ Y.on('all-modules-loaded', function() {
 				$detailNode.on('click', function() {
 					$detailNode.setStyle('display', 'none');
 				});
-			}, {id: id, renderOnNode: true});
+			}
+			
 		});
 	});			
 });

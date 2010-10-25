@@ -15,7 +15,7 @@ YUI().add('ajax-module-loader', function(Y) {
 				    if (!skipRender) {
     					RENDERERS[moduleType]({node:$node, data: data, Y:Y, source:getUserAgentString()});
 				    }
-					cb(data);
+					cb(moduleType, data);
 				}
 			}
 		};

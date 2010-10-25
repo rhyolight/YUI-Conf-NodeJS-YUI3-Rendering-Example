@@ -12,8 +12,11 @@
 		<h1>Browser & Client Side Rendering Prototype</h1>
 		<div class="actions rounded orange">
 			<h3>Ways to Render</h3>
-			<g:link>Render on Client (JS)</g:link><br/><br/>
-			<g:link params="[renderOnNode:true]">Render on NodeJS (JS)</g:link>
+			<ul>
+			<li><g:link>Render on Client (JS)</g:link></li>
+			<li><g:link params="[renderOnNode:true]">Render on NodeJS (JS)</g:link></li>
+			<li><input id="renderDialogOnServer" type='checkbox' CHECKED><label for="renderDialogOnServer">Render Dialog on Server</li>
+			</ul>
 		</div>
         <g:layoutBody />
     </body>

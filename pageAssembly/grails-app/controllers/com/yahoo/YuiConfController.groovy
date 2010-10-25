@@ -23,14 +23,14 @@ class YuiConfController {
     def index = {
         println "\n\nPAGE REFRESH"
         def modules = ['doctors', 'enemies']
-        if (params.renderOnServer) {
+        if (params.renderOnServer as int) {
             println 'rendering on server'
             return render(view:'serverRender', model:[
                 enemies:Enemy.list(), 
                 doctors:Doctor.list()
             ])
         }
-        if (params.renderOnNode) {
+        if (params.renderOnNode as int) {
             println 'rendering on nodejs'
             def markups = nodeService.getMarkupFor(modules, params.forceRendererReload)
             return render(view:'nodeRender', model:[
@@ -59,8 +59,7 @@ class YuiConfController {
     
     def doctorDetail = {
         println "AJAX request for 'doctor details' data received..."
-        
-        if (params.renderOnNode) {
+        if (params.renderOnNode as int) {
             println 'rendering on nodejs'
             def markup = nodeService.getDoctorDetailMarkup(params.id, params.forceRendererReload)
             println "returning markup:\n${markup}"
