@@ -12,10 +12,16 @@ YUI().add('ajax-module-loader', function(Y) {
 			},
 			on: {
 				success: function(data, skipRender) {
+				    var opts = {moduleType: moduleType};
+				    if (Y.Lang.isString(data)) {
+				        opts.markup = data;
+				    } else {
+				        opts.data = data;
+				    }
 				    if (!skipRender) {
     					RENDERERS[moduleType]({node:$node, data: data, Y:Y, source:getUserAgentString()});
 				    }
-					cb(moduleType, data);
+					cb(opts);
 				}
 			}
 		};
@@ -25,6 +31,10 @@ YUI().add('ajax-module-loader', function(Y) {
         
 		getRenderingData(ioOptions);
 	};
+	
+	function isJSON(resp) {
+	    return resp.getResponseHeader('Content-Type').indexOf('application/json') === 0;
+	}
 	
 	function getUserAgentString() {
 	    var ua = '', patform = '';
@@ -63,8 +73,8 @@ YUI().add('ajax-module-loader', function(Y) {
         var successCb = cfg.on.success;
         
         var successWrapper = function(id, resp) {
-            // if this is JSON data, load the JS and render to HTML
-            if (resp.getResponseHeader('Content-Type').indexOf('text/plain') < 0) {
+            // if this is JSON data, load the JS and render data to HTML
+            if (isJSON(resp)) {
                 var json = Y.JSON.parse(resp.responseText),
                     rendererUrl = json.renderer;
                 Y.Get.script(rendererUrl, {
@@ -72,7 +82,7 @@ YUI().add('ajax-module-loader', function(Y) {
                         successCb(json.data);
                     },
                     onFailure: function(o) {
-                        Y.log('failed to load render: ' + rendererUrl);
+                        Y.log('failed to load renderer: ' + rendererUrl);
                     }
                 });                
             } else {

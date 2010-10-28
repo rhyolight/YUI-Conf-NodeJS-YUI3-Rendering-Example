@@ -13,7 +13,8 @@
 		<div class="actions rounded orange">
 			<h3>Ways to Render</h3>
 			<ul>
-			<li><g:link>Render on Client (JS)</g:link></li>
+			<li><g:link>Render on Server (GSP)</g:link></li>
+			<li><g:link params="[renderOnClient:true]">Render on Client (JS)</g:link></li>
 			<li><g:link params="[renderOnNode:true]">Render on NodeJS (JS)</g:link></li>
 			<li><input id="renderDialogOnServer" type='checkbox' CHECKED><label for="renderDialogOnServer">Render Dialog on Server</li>
 			</ul>

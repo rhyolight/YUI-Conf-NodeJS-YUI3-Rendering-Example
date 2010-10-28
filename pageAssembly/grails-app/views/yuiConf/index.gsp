@@ -22,33 +22,35 @@
 
 		<script type="text/javascript" src="http://yui.yahooapis.com/combo?3.2.0/build/yui/yui.js"></script>
 		<g:javascript src="ajax_module_loader.js"/>
+		<g:javascript src="doc_detail_handler.js"/>
 		
 		<script>
 		
-			YUI({filter: 'raw'}).use('node', 'event', 'overlay', 'ajax-module-loader', function(Y) {
-				
-				<g:render template="eventHandlingJs"/>
+			YUI({filter: 'raw'}).use(
+					'node', 
+					'event-custom', 
+					'overlay', 
+					'ajax-module-loader', 
+					'doc-detail-handler', 
+			function(Y) {
 				
 				var dynamicallyLoadedModules = ${modulesAsJSON},
 					loaded = 0;
 					
-				function onModuleLoad(moduleType) {
+				function onModuleLoad(opts) {
+					var moduleType = opts.moduleType;
 					var $moduleNode = Y.one('#' + moduleType + '-container');
 					$moduleNode.removeClass('loading ' + moduleType);
 					loaded++;
 					if (loaded === dynamicallyLoadedModules.length) {
-						Y.fire('all-modules-loaded');
+						Y.Global.fire('all-modules-loaded');
 					}
 				}
-				
-				function loadModule(moduleType, cb, params) {
+					
+				Y.Array.each(dynamicallyLoadedModules, function(moduleType) {
 					var $moduleNode = Y.one('#' + moduleType + '-container');
 					$moduleNode.addClass('loading ' + moduleType);
-					Y.YUICONF.loadModule(moduleType, $moduleNode, cb, params);
-				}
-					
-				Y.Array.each(dynamicallyLoadedModules, function(type) {
-					loadModule(type, onModuleLoad);
+					Y.YUICONF.loadModule(moduleType, $moduleNode, onModuleLoad);
 				});
 
 				Y.one('body').prepend('<h1 class="notice rounded">Rendered with YUI3 on Client</h1>');

@@ -58,6 +58,9 @@ li {
 	width: 200px;
 	
 }
+.actions li {
+    list-style: none;
+}
 .notice {
 	position: absolute;
 	top: 260px;
@@ -76,7 +79,7 @@ li {
 	background-color: #F4A31F;
 }
 .source {
-	color: grey;
+	color: red;
 	font-size: 11pt;
 }
 #doctorDetail {

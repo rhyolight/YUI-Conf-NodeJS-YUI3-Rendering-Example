@@ -21,24 +21,27 @@ class YuiConfController {
     }
     
     def index = {
-        println "\n\nPAGE REFRESH"
+        println "\n\nPAGE ASSEMBLY START"
         def modules = ['doctors', 'enemies']
-        if (params.renderOnServer as int) {
-            println 'rendering on server'
-            return render(view:'serverRender', model:[
-                enemies:Enemy.list(), 
-                doctors:Doctor.list()
+        if (params.renderOnClient) {
+            println 'rendering modules on client'
+            return render(view:'index', model:[
+                modules:modules, 
+                modulesAsJSON:modules as JSON
             ])
         }
-        if (params.renderOnNode as int) {
-            println 'rendering on nodejs'
+        if (params.renderOnNode) {
+            println 'rendering modules on nodejs'
             def markups = nodeService.getMarkupFor(modules, params.forceRendererReload)
             return render(view:'nodeRender', model:[
                 markups:markups.sort()
             ])
         }
-        println 'rendering on client'
-        render(view:'index', model:[modules:modules, modulesAsJSON:modules as JSON])
+        println 'rendering modules on server by default'
+        return render(view:'serverRender', model:[
+            enemies:Enemy.list(), 
+            doctors:Doctor.list()
+        ])
     }
     
     // JSON functions for ajax calls
