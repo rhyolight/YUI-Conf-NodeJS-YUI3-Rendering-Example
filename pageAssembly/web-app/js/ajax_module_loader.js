@@ -13,35 +13,33 @@ YUI().add('ajax-module-loader', function(Y) {
      * params: object with data to be sent with request
      */
     Y.YUICONF.loadModule = function(moduleType, $node, cb, params) {
-        var ioOptions = {
-			data: {
-			    // meta data identifies to the server what controller/action to 
-			    // execute
-				meta: {
-					context: 'yuiConf',
-					action: moduleType
-				}
-			},
-			on: {
-				success: function(data, skipRender) {
-				    var opts = {moduleType: moduleType};
-				    if (Y.Lang.isString(data)) {
-				        opts.markup = data;
-				    } else {
-				        opts.data = data;
-				    }
-				    if (!skipRender) {
-    					RENDERERS[moduleType]({node:$node, data: data, Y:Y, source:getUserAgentString()});
-				    }
-					cb(opts);
-				}
-			}
-		};
+        // default meta data to tell server how to process ajax call
+        var data = {meta: {context: 'yuiConf', action: moduleType}};
+        // allows users to add more data to the call if they need to
 		if (params) {
-		    Y.mix(ioOptions.data, params);
+		    data = Y.mix(data, params);
 		}
-        
-		getRenderingData(ioOptions);
+		
+		/* Called after the rendering script is loaded. Will run the response
+		 * data through the rendering script to updated the DOM node if
+		 * the response data is a JS object. Otherwise, it assumes it is a
+		 * markup string and just returns it to the original user-defined
+		 * callback. 
+		 */
+        function renderingCallbackWrapper(data, skipRender) {
+		    var opts = {moduleType: moduleType};
+		    if (Y.Lang.isString(data)) {
+		        opts.markup = data;
+		    } else {
+		        opts.data = data;
+		    }
+		    if (!skipRender) {
+				RENDERERS[moduleType]({node:$node, data: data, Y:Y, source:getUserAgentString()});
+		    }
+			cb(opts);
+		}
+		
+		getRenderingData(data, renderingCallbackWrapper);
 	};
 	
 	function isJSON(resp) {
@@ -65,45 +63,39 @@ YUI().add('ajax-module-loader', function(Y) {
         return ua + ', ' + platform;
 	}
     
-    function getRenderingData(opts) {
+    function getRenderingData(data, cb) {
         var url = '/pageAssembly/ajp',
-            defaults = {
+            ioOptions = {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                on: {}
-            },
-            cfg = Y.merge(defaults, opts);
-        
-        if (cfg.data && !cfg.data.meta) {
-            cfg.data.meta = {
-                context: 'default',
-                action: 'status'
+                data: data
             };
-        }
         
-        var successCb = cfg.on.success;
+        ioOptions.on = {
+            success: scriptLoadingCallbackWrapper
+        };
         
-        cfg.on.success = function(id, resp) {
+        function scriptLoadingCallbackWrapper(id, resp) {
             // if this is JSON data, load the JS and render data to HTML
             if (isJSON(resp)) {
                 var json = Y.JSON.parse(resp.responseText),
                     rendererUrl = json.renderer;
                 Y.Get.script(rendererUrl, {
                     onSuccess: function() {
-                        successCb(json.data);
+                        cb(json.data);
                     },
                     onFailure: function(o) {
                         Y.log('failed to load renderer: ' + rendererUrl);
                     }
                 });                
             } else {
-                successCb(resp.responseText, true);
+                cb(resp.responseText, true);
             }
         };
         
-        Y.io(url, cfg);
+        Y.io(url, ioOptions);
     }
     
 }, '0.1', {requires: ['io', 'oop', 'querystring-stringify', 'json-parse']});
