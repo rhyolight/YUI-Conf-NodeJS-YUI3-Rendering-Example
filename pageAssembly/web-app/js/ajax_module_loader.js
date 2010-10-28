@@ -39,11 +39,60 @@ YUI().add('ajax-module-loader', function(Y) {
 			cb(opts);
 		}
 		
-		getRenderingData(data, renderingCallbackWrapper);
+		loadResponseData(data, renderingCallbackWrapper);
 	};
 	
-	function isJSON(resp) {
-	    return resp.getResponseHeader('Content-Type').indexOf('application/json') === 0;
+	/* Does the actual Y.IO call, loading any JS render it finds in the
+	 * response. Then calls the given callback with either the JS object
+	 * it parsed from the JSON response or the responseText.
+	 */
+	function loadResponseData(data, renderingCallback) {
+        var url = '/pageAssembly/ajp',
+            ioOptions = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: data
+            };
+        
+        ioOptions.on = {
+            success: scriptLoadingCallbackWrapper
+        };
+        
+        /* If the reponse contains JSON, this callback will parse it and 
+         * ensure the proper renderer script is loaded before calling the
+         * callback sent into this function, which will then use the loaded
+         * renderer to update the DOM.
+         */
+        function scriptLoadingCallbackWrapper(id, resp) {
+            // if this is JSON data, load the JS and render data to HTML
+            if (isJSON(resp)) {
+                var json = Y.JSON.parse(resp.responseText),
+                    rendererUrl = json.renderer;
+                Y.Get.script(rendererUrl, {
+                    onSuccess: function() {
+                        renderingCallback(json.data);
+                    },
+                    onFailure: function(o) {
+                        Y.log('failed to load renderer: ' + rendererUrl);
+                    }
+                });                
+            } 
+            // this is just a markup string (or something else) so we just
+            // pass the string back to the rendering callback and tell it
+            // to skip the rendering
+            else {
+                renderingCallback(resp.responseText, true);
+            }
+        };
+        
+        Y.io(url, ioOptions);
+    }
+    
+    function isJSON(resp) {
+	    return resp.getResponseHeader('Content-Type')
+	               .indexOf('application/json') === 0;
 	}
 	
 	function getUserAgentString() {
@@ -62,40 +111,5 @@ YUI().add('ajax-module-loader', function(Y) {
         });
         return ua + ', ' + platform;
 	}
-    
-    function getRenderingData(data, cb) {
-        var url = '/pageAssembly/ajp',
-            ioOptions = {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                data: data
-            };
-        
-        ioOptions.on = {
-            success: scriptLoadingCallbackWrapper
-        };
-        
-        function scriptLoadingCallbackWrapper(id, resp) {
-            // if this is JSON data, load the JS and render data to HTML
-            if (isJSON(resp)) {
-                var json = Y.JSON.parse(resp.responseText),
-                    rendererUrl = json.renderer;
-                Y.Get.script(rendererUrl, {
-                    onSuccess: function() {
-                        cb(json.data);
-                    },
-                    onFailure: function(o) {
-                        Y.log('failed to load renderer: ' + rendererUrl);
-                    }
-                });                
-            } else {
-                cb(resp.responseText, true);
-            }
-        };
-        
-        Y.io(url, ioOptions);
-    }
     
 }, '0.1', {requires: ['io', 'oop', 'querystring-stringify', 'json-parse']});
