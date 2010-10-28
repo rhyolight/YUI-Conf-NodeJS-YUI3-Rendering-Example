@@ -1,10 +1,22 @@
 YUI().add('ajax-module-loader', function(Y) {
     
     Y.namespace('YUICONF');
-    
+    /* Makes an AJAX call to the server to load a module. 
+     * moduleType: String identifier
+     * $node: Y.Node the dom node that will be updated with results by the
+     *          JavaScript renderer script. This may be null if the response
+     *          contains only markup (meaning the rendering was done on the
+     *          server)
+     * cb: Function called after IO completion. May be passed JS object
+     *      representing server response data or a markup string if the
+     *      module was rendered on the server
+     * params: object with data to be sent with request
+     */
     Y.YUICONF.loadModule = function(moduleType, $node, cb, params) {
         var ioOptions = {
 			data: {
+			    // meta data identifies to the server what controller/action to 
+			    // execute
 				meta: {
 					context: 'yuiConf',
 					action: moduleType
@@ -59,7 +71,8 @@ YUI().add('ajax-module-loader', function(Y) {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                on: {}
             },
             cfg = Y.merge(defaults, opts);
         
@@ -72,7 +85,7 @@ YUI().add('ajax-module-loader', function(Y) {
         
         var successCb = cfg.on.success;
         
-        var successWrapper = function(id, resp) {
+        cfg.on.success = function(id, resp) {
             // if this is JSON data, load the JS and render data to HTML
             if (isJSON(resp)) {
                 var json = Y.JSON.parse(resp.responseText),
@@ -89,10 +102,6 @@ YUI().add('ajax-module-loader', function(Y) {
                 successCb(resp.responseText, true);
             }
         };
-        
-        if (!cfg.on) { cfg.on = {}; };
-        
-        cfg.on.success = successWrapper;
         
         Y.io(url, cfg);
     }

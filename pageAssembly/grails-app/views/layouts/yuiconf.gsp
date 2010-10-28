@@ -6,7 +6,6 @@
 		<link rel="stylesheet" type="text/css" href="${resource(dir:'css', file:'yuiconf.css')}">
         
         <g:layoutHead />
-        <g:javascript library="application" />
     </head>
     <body>
 		<h1>Browser & Client Side Rendering Prototype</h1>

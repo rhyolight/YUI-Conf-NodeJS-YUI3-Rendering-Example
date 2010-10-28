@@ -24,14 +24,18 @@
 	
 		<script type="text/javascript" src="http://yui.yahooapis.com/combo?3.2.0/build/yui/yui.js"></script>
 		<g:javascript src="ajax_module_loader.js"/>
+		<g:javascript src="doc_detail_handler.js"/>
 	
 		<script>
 		
-			YUI({filter: 'raw'}).use('node', 'event', 'overlay', 'ajax-module-loader', function(Y) {
-				
-				<g:render template="eventHandlingJs"/>
-				
-				Y.fire('all-modules-loaded');
+			YUI({filter: 'raw'}).use(
+					'node', 
+					'event-custom', 
+					'overlay', 
+					'ajax-module-loader', 
+					'doc-detail-handler', 
+			function(Y) {
+				Y.Global.fire('all-modules-loaded');
 			});
 		
 		</script>
