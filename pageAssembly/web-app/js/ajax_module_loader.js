@@ -1,6 +1,7 @@
 YUI().add('ajax-module-loader', function(Y) {
     
     Y.namespace('YUICONF');
+    
     /* Makes an AJAX call to the server to load a module. 
      * moduleType: String identifier
      * $node: Y.Node the dom node that will be updated with results by the
