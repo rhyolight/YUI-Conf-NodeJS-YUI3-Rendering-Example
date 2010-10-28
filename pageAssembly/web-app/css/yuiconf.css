@@ -25,6 +25,7 @@ li {
 	width: 100px;
 	float:left;
 	margin: 0px 20px;
+	border: solid 1px black;
 }
 .who li {
 	clear: left;
