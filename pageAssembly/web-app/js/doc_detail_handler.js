@@ -73,4 +73,4 @@ YUI().add('doc-detail-handler', function(Y) {
     	});			
     });
     
-}, '0.1', {requires:['event-custom', 'node']});
+}, '0.1', {requires:['event-custom', 'node', 'ajax-module-loader', 'overlay']});

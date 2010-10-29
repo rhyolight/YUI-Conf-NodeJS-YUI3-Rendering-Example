@@ -28,13 +28,7 @@
 	
 		<script>
 		
-			YUI({filter: 'raw'}).use(
-					'node', 
-					'event-custom', 
-					'overlay', 
-					'ajax-module-loader', 
-					'doc-detail-handler', 
-			function(Y) {
+			YUI().use('event', 'doc-detail-handler', function(Y) {
 				Y.Global.fire('all-modules-loaded');
 			});
 		
