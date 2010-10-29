@@ -14,6 +14,7 @@ YUI().add('ajax-module-loader', function(Y) {
      * params: object with data to be sent with request
      */
     Y.YUICONF.loadModule = function(moduleType, $node, cb, params) {
+        Y.log('loading module "' + moduleType + '"...');
         // default meta data to tell server how to process ajax call
         var data = {meta: {context: 'yuiConf', action: moduleType}};
         // allows users to add more data to the call if they need to
@@ -27,15 +28,15 @@ YUI().add('ajax-module-loader', function(Y) {
 		 * markup string and just returns it to the original user-defined
 		 * callback. 
 		 */
-        function renderingCallbackWrapper(data, skipRender) {
+        function renderingCallbackWrapper(data) {
 		    var opts = {moduleType: moduleType};
 		    if (Y.Lang.isString(data)) {
+		        Y.log('setting markup directly into DOM');
 		        opts.markup = data;
 		    } else {
 		        opts.data = data;
-		    }
-		    if (!skipRender) {
-				RENDERERS[moduleType]({node:$node, data: data, Y:Y, source:getUserAgentString()});
+		        Y.log('calling renderer to update DOM');
+		        RENDERERS[moduleType]({node:$node, data: data, Y:Y, source:getUserAgentString()});
 		    }
 			cb(opts);
 		}
@@ -67,27 +68,33 @@ YUI().add('ajax-module-loader', function(Y) {
          * renderer to update the DOM.
          */
         function scriptLoadingCallbackWrapper(id, resp) {
+            Y.log('received module response from server');
             // if this is JSON data, load the JS and render data to HTML
             if (isJSON(resp)) {
+                Y.log('parsing JSON from response');
                 var json = Y.JSON.parse(resp.responseText),
                     rendererUrl = json.renderer;
+                Y.log('loading JS renderer: ' + rendererUrl);
                 Y.Get.script(rendererUrl, {
                     onSuccess: function() {
+                        Y.log(rendererUrl + ' is loaded');
                         renderingCallback(json.data);
                     },
                     onFailure: function(o) {
-                        Y.log('failed to load renderer: ' + rendererUrl);
+                        Y.log('failed to load renderer: ' + rendererUrl, 'warn');
                     }
-                });                
+                });
             } 
             // this is just a markup string (or something else) so we just
             // pass the string back to the rendering callback and tell it
             // to skip the rendering
             else {
-                renderingCallback(resp.responseText, true);
+                Y.log('got string back from response');
+                renderingCallback(resp.responseText);
             }
         };
         
+        Y.log('IO call to ' + url);
         Y.io(url, ioOptions);
     }
     
