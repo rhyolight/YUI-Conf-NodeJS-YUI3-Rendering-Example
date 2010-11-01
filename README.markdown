@@ -34,4 +34,6 @@ Once you have both servers started up, just go to http://localhost:8080/pageAsse
 What is Going on Here?
 ----------------------
 
-I'll try to explain later. ;)
+This code is a running proof of concept for Matt Taylor's YUIConf 2010 talk. Once you start up the servers as instructed above, you should be able to see a page showing two modules. The module on the left lists enemies of the sci-fi hero [Doctor Who](http://www.bbc.co.uk/doctorwho/dw). The module on the right lists all the actors who have played the Doctor. Initially, both of these views are rendered using the default Grails templating system (GSPs and Sitemesh). But if you look at the center column, there are links that will render the page in different ways. 
+
+Once my YUIConf talk is completed, I'll link the slides and video here for a complete description of this code.
