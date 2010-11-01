@@ -12,7 +12,7 @@ function loadJS(url, cb, force) {
 		alreadyCached = (arr.findIndex(rendererCache, function(it) {
 			return (it.name === jsfilename);
 		}) > -1);
-		l.log(jsfilename + ' cached? : ' + alreadyCached);
+		l.log('renderer named "' + jsfilename + '" cached? : ' + alreadyCached);
 		if (!force && alreadyCached) {
 			l.log('using cached renderer originally loaded from "' + url.href + '"');
 			cb(RENDERERS[jsfilename]);
@@ -23,9 +23,9 @@ function loadJS(url, cb, force) {
 				l.log('forcing refresh for renderer: ' + jsfilename);
 				deleteRendererFromCache(url);
 			}
-			l.log('Evil() renderer...');
+			l.log('eval-ing renderer...');
 			eval(js);
-			l.log('JS has evil()ed... pushing "' + url.href + '" to cache.');
+			l.log('JS has eval-ed... pushing "' + url.href + '" to cache.');
 			cacheTheRenderer(url);
 			cb(RENDERERS[jsfilename]);
 		} catch (err) {
@@ -47,7 +47,7 @@ function cacheTheRenderer(url) {
 			}
 		};
 	rendererCache.push(obj);
-	l.log('cache complete for ' + url.href + '. cache has ' + rendererCache.length + ' items.');
+	l.log('cache complete for ' + url.href + '. \n\tcache now has ' + rendererCache.length + ' items.');
 }
 
 function deleteRendererFromCache(url) {
@@ -59,7 +59,7 @@ function deleteRendererFromCache(url) {
 		cache = rendererCache[cacheIndex];
 	cache.remove();
 	arr.remove(rendererCache, cacheIndex);
-	l.log('cache delete complete for ' + url.href + '. cache has ' + rendererCache.length + ' items.');
+	l.log('cache delete complete for ' + url.href + '. \n\tcache now has ' + rendererCache.length + ' items.');
 }
 
 function getJSFileName(url) {
