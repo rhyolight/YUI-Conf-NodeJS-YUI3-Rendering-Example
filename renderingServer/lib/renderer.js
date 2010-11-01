@@ -53,7 +53,7 @@ function cacheTheRenderer(url) {
 function deleteRendererFromCache(url) {
 	var name = getJSFileName(url),
 		cacheIndex = arr.findIndex(rendererCache, function(it) {
-			l.log('====> checking ' + it.name + ' vs ' + name);
+			l.log('checking ' + it.name + ' vs ' + name);
 			return (it.name === name);
 		}),
 		cache = rendererCache[cacheIndex];

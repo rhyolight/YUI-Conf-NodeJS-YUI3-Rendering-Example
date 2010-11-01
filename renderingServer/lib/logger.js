@@ -2,7 +2,7 @@ var sys = require('sys'),
     time, lastMark;
 
 function log(str) {
-	var t = new Date();
+	var t = new Date().getTime();
 	sys.puts(t + ':\t' + str);
 };
 
