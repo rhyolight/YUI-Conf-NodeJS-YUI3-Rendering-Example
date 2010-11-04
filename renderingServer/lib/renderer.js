@@ -8,11 +8,11 @@ function loadJS(url, cb, force) {
 
 	getUrlContents(url, function(js) {
 		jsfilename = getJSFileName(url);
-		l.log('js file name: ' + jsfilename);
+		l.log('renderer file name: ' + jsfilename);
 		alreadyCached = (arr.findIndex(rendererCache, function(it) {
 			return (it.name === jsfilename);
 		}) > -1);
-		l.log('renderer named "' + jsfilename + '" cached? : ' + alreadyCached);
+        // l.log('renderer named "' + jsfilename + '" cached? : ' + alreadyCached);
 		if (!force && alreadyCached) {
 			l.log('using cached renderer originally loaded from "' + url.href + '"');
 			cb(RENDERERS[jsfilename]);
@@ -20,7 +20,7 @@ function loadJS(url, cb, force) {
 		}
 		try {
 			if (alreadyCached) {
-				l.log('forcing refresh for renderer: ' + jsfilename);
+                // l.log('forcing refresh for renderer: ' + jsfilename);
 				deleteRendererFromCache(url);
 			}
 			l.log('eval-ing renderer...');
@@ -40,26 +40,26 @@ function cacheTheRenderer(url) {
 			href: url.href,
 			name: name,
 			remove: function() {
-				l.log('removing cache for ' + name);
-				l.log('before removal, RENDERERS.' + name + ' is:\n' + RENDERERS[name]);
+                // l.log('removing cache for ' + name);
+                // l.log('before removal, RENDERERS.' + name + ' is:\n' + RENDERERS[name]);
 				delete RENDERERS[name];
-				l.log('after removal, RENDERERS.' + name + ' is:\n' + RENDERERS[name]);
+                // l.log('after removal, RENDERERS.' + name + ' is:\n' + RENDERERS[name]);
 			}
 		};
 	rendererCache.push(obj);
-	l.log('cache complete for ' + url.href + '. \n\tcache now has ' + rendererCache.length + ' items.');
+    // l.log('cache complete for ' + url.href + '. \n\tcache now has ' + rendererCache.length + ' items.');
 }
 
 function deleteRendererFromCache(url) {
 	var name = getJSFileName(url),
 		cacheIndex = arr.findIndex(rendererCache, function(it) {
-			l.log('checking ' + it.name + ' vs ' + name);
+            // l.log('checking ' + it.name + ' vs ' + name);
 			return (it.name === name);
 		}),
 		cache = rendererCache[cacheIndex];
 	cache.remove();
 	arr.remove(rendererCache, cacheIndex);
-	l.log('cache delete complete for ' + url.href + '. \n\tcache now has ' + rendererCache.length + ' items.');
+    // l.log('cache delete complete for ' + url.href + '. \n\tcache now has ' + rendererCache.length + ' items.');
 }
 
 function getJSFileName(url) {
@@ -102,7 +102,7 @@ function errorFunctionCreator(err, url) {
 exports.render = function(data, url, Page, cb, force) {
 	var force = force || false;
 
-	l.log('rendering... force refresh is ' + force);
+	l.log('render start... ');
 
 	loadJS(url, function(renderFn) {
 		// l.log(data);

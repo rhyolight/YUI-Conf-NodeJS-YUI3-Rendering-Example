@@ -64,7 +64,7 @@ li {
 }
 .notice {
 	position: absolute;
-	top: 280px;
+	top: 300px;
 	left: 340px;
 	color: white;
 	background-color: #BE1B34;
@@ -83,13 +83,6 @@ li {
 	color: red;
 	font-size: 11pt;
 }
-#doctorDetail {
-}
-#doctorDetail img {
-	float:right;
-	height: 16em;
-}
-
 .yui3-widget {
     background: pink;
     padding: 20px;
@@ -103,6 +96,30 @@ li {
     font-size: 20pt;
     text-align: center;
 }
+
+.who .yui3-widget {
+    background: #84C8FF;
+}
+#doctorDetail .yui3-widget-hd {
+    font-family: Monofur;
+    border-bottom: 4px solid black;
+}
+#doctorDetail .yui3-widget-bd {
+    padding-top: 10px;
+}
+#doctorDetail .yui3-widget-ft {
+    padding-top: 10px;
+}
+#doctorDetail h3 {
+    margin: 0px;
+}
+#doctorDetail img {
+	float:right;
+	height: 16em;
+}
+
+
+
 #demolog li {
     list-style: none;
     min-height: 30px;

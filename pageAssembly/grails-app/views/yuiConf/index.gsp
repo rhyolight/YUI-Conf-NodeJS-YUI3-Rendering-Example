@@ -10,11 +10,14 @@
 			<g:each in="${modules}">
 				<div id="${it}-container"></div>
 			</g:each>
+			
+			<div id="doctorDetail">
+				<div id="doctorDetail-container"></div>
+			</div>
+			
 		</div>
 		
-		<div id="doctorDetail">
-			<div id="doctorDetail-container"></div>
-		</div>
+
 		
 		<noscript>
 			<h2>Well, Crap!</h2>

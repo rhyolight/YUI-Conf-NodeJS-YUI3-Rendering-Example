@@ -7,7 +7,7 @@ RENDERERS.doctors = function(opts) {
         $docs,
         cnt = 1;
         
-    Y.log("'Doctors' renderer is executing.", 'info');
+    Y.log('"doctors" data being rendered into <strong>' + $node.getAttribute('id') + '</strong> node.', 'info');
     
     $node.append('<div class="source">rendered by ' + opts.source + '</div>');
     $node.append('<ul id="doctors"></ul>');

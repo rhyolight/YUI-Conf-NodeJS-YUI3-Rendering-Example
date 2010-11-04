@@ -6,8 +6,8 @@ RENDERERS.doctorDetail = function(opts) {
         Y = opts.Y,
         $docDetailOverlay, $hd, $bd, $ft, $desc, $img;
     
-    Y.log("'DoctorDetail' renderer is executing.", 'info');
-    
+    Y.log('"doctorDetail" data being rendered into <strong>' + $node.getAttribute('id') + '</strong> node.', 'info');
+
     $hd = Y.Node.create('<div class="yui3-widget-hd"><h3>' + data.name + '</h3></div>');
     
     $bd = Y.Node.create('<div class="yui3-widget-bd"></div>');

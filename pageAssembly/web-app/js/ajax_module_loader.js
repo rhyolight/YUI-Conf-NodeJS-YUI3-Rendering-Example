@@ -31,14 +31,18 @@ YUI().add('ajax-module-loader', function(Y) {
 		 * callback. 
 		 */
         function renderingCallbackWrapper(data) {
-		    var opts = {moduleType: moduleType};
+		    var opts = {moduleType: moduleType}, oldLog;
 		    if (Y.Lang.isString(data)) {
-		        log('setting markup directly into DOM', moduleType);
 		        opts.markup = data;
 		    } else {
 		        opts.data = data;
-		        log('calling renderer to update DOM', moduleType);
+		        log('calling "' + moduleType + '" renderer to update DOM', moduleType);
+		        oldLog = Y.log;
+		        Y.log = function(s, type) {
+                    Y.Global.fire('demo-info', {text:s, context:moduleType + '-renderer', type:type});
+                };
 		        RENDERERS[moduleType]({node:$node, data: data, Y:Y, source:getUserAgentString()});
+		        Y.log = oldLog;
 		    }
 			cb(opts);
 		}

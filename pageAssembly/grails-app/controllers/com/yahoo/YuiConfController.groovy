@@ -8,7 +8,7 @@ class YuiConfController {
 
     def nodeService
     def g = new ApplicationTagLib()
-    def AJAX_WAIT = 500;
+    def AJAX_WAIT = 0;
     
     def dispatch = {
         println "Dispatching AJAX request..."
