@@ -64,7 +64,7 @@ li {
 }
 .notice {
 	position: absolute;
-	top: 260px;
+	top: 280px;
 	left: 340px;
 	color: white;
 	background-color: #BE1B34;
@@ -84,12 +84,60 @@ li {
 	font-size: 11pt;
 }
 #doctorDetail {
-	background-color: #fdf3cd;
-	overflow: auto;
-	padding: 20px;
-	border: solid black 2px;
 }
 #doctorDetail img {
 	float:right;
 	height: 16em;
+}
+
+.yui3-widget {
+    background: pink;
+    padding: 20px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    border: 2px solid black;
+}
+.yui3-widget-hd {
+    border-bottom: 2px dashed grey;
+    font-weight: bold;
+    font-size: 20pt;
+    text-align: center;
+}
+#demolog li {
+    list-style: none;
+    min-height: 30px;
+}
+#demolog .odd {
+    background: salmon;
+}
+#demolog .even {
+    background: #FFACB7;
+}
+#demolog span {
+    font-weight: bold;
+    font-size: 16pt;
+}
+#demolog .arrow {
+    float: right;
+    clear: right;
+    font-size: 18pt;
+    padding-right: 5px;
+}
+#demolog .ajax-module-loader {
+    color: #800000;
+}
+#demolog .doc-detail-handler {
+    color: indigo;
+}
+#demolog .page {
+    color: #006100;
+}
+#demolog .enemies-log .arrow {
+    color: red;
+}
+#demolog .doctors-log .arrow {
+    color: blue;
+}
+#demolog .doctors-log .arrow {
+    color: yellow;
 }

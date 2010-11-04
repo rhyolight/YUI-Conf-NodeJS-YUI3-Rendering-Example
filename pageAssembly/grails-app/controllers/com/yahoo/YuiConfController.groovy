@@ -27,14 +27,18 @@ class YuiConfController {
             println 'rendering modules on client'
             return render(view:'index', model:[
                 modules:modules, 
-                modulesAsJSON:modules as JSON
+                modulesAsJSON:modules as JSON,
+                logit:params.log,
+                blockit:params.block
             ])
         }
         if (params.renderOnNode) {
             println 'rendering modules on nodejs'
             def markups = nodeService.getMarkupFor(modules, params.forceRendererReload)
             return render(view:'nodeRender', model:[
-                markups:markups.sort()
+                markups:markups.sort(),
+                logit:params.log,
+                blockit:params.block
             ])
         }
         println 'rendering modules on server by default'

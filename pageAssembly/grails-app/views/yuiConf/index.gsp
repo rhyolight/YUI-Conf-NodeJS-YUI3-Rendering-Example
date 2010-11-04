@@ -12,7 +12,9 @@
 			</g:each>
 		</div>
 		
-		<div id="doctorDetail-container"></div>
+		<div id="doctorDetail">
+			<div id="doctorDetail-container"></div>
+		</div>
 		
 		<noscript>
 			<h2>Well, Crap!</h2>
@@ -21,6 +23,7 @@
 		</noscript>
 
 		<script type="text/javascript" src="http://yui.yahooapis.com/combo?3.2.0/build/yui/yui.js"></script>
+		<g:javascript src="yuiconf.js"/>
 		<g:javascript src="ajax_module_loader.js"/>
 		<g:javascript src="doc_detail_handler.js"/>
 		
@@ -42,7 +45,9 @@
 					var $moduleNode = Y.one('#' + moduleType + '-container');
 					$moduleNode.removeClass('loading ' + moduleType);
 					loaded++;
+					log(loaded + ' modules have been loaded out of ' + dynamicallyLoadedModules.length + ' total.');
 					if (loaded === dynamicallyLoadedModules.length) {
+						log('all modules are loaded.');
 						// all modules are loaded, fire the torpedo!
 						Y.Global.fire('all-modules-loaded');
 					}
@@ -59,6 +64,10 @@
 				});
 
 				Y.one('body').prepend('<h1 class="notice rounded">Rendered with YUI3 on Client</h1>');
+				
+				function log(s) {
+			        Y.Global.fire('demo-info', {text:s, context:'page'});
+			    }
 			});
 		
 		</script>

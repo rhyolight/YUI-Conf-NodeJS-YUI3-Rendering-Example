@@ -13,9 +13,11 @@
 			<h3>Ways to Render</h3>
 			<ul>
 			<li><g:link>Render on Server (GSP)</g:link></li>
-			<li><g:link params="[renderOnClient:true]">Render on Client (JS)</g:link></li>
-			<li><g:link params="[renderOnNode:true]">Render on NodeJS (JS)</g:link></li>
-			<li><input id="renderDialogOnServer" type='checkbox' CHECKED><label for="renderDialogOnServer">Render Dialog on Server</li>
+			<li class="render-link"><g:link params="[renderOnClient:true]" elementId='renderOnClientLink'>Render on Client (JS)</g:link></li>
+			<li class="render-link"><g:link params="[renderOnNode:true]" elementId='renderOnNodeLink'>Render on NodeJS (JS)</g:link></li>
+			<li><input id="renderDialogOnServer" type='checkbox'><label for="renderDialogOnServer">Render Dialog on Server</li>
+			<li><input id="logit" type='checkbox' ${logit ? 'CHECKED' : ''}><label for="logit">Turn on Logs</li>
+			<li><input id="blockit" type='checkbox' ${blockit ? 'CHECKED' : ''}><label for="blockit">Blocking Logs</li>
 			</ul>
 		</div>
         <g:layoutBody />

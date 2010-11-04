@@ -1,6 +1,8 @@
 YUI().add('ajax-module-loader', function(Y) {
     
-    Y.namespace('YUICONF');
+    function log(s, type) {
+        Y.Global.fire('demo-info', {text:s, context:'ajax-module-loader', type:type});
+    }
     
     /* Makes an AJAX call to the server to load a module. 
      * moduleType: String identifier
@@ -14,7 +16,7 @@ YUI().add('ajax-module-loader', function(Y) {
      * params: object with data to be sent with request
      */
     Y.YUICONF.loadModule = function(moduleType, $node, cb, params) {
-        Y.log('loading module "' + moduleType + '"...');
+        log('loading module "' + moduleType + '"...', moduleType);
         // default meta data to tell server how to process ajax call
         var data = {meta: {context: 'yuiConf', action: moduleType}};
         // allows users to add more data to the call if they need to
@@ -31,11 +33,11 @@ YUI().add('ajax-module-loader', function(Y) {
         function renderingCallbackWrapper(data) {
 		    var opts = {moduleType: moduleType};
 		    if (Y.Lang.isString(data)) {
-		        Y.log('setting markup directly into DOM');
+		        log('setting markup directly into DOM', moduleType);
 		        opts.markup = data;
 		    } else {
 		        opts.data = data;
-		        Y.log('calling renderer to update DOM');
+		        log('calling renderer to update DOM', moduleType);
 		        RENDERERS[moduleType]({node:$node, data: data, Y:Y, source:getUserAgentString()});
 		    }
 			cb(opts);
@@ -68,16 +70,16 @@ YUI().add('ajax-module-loader', function(Y) {
          * renderer to update the DOM.
          */
         function scriptLoadingCallbackWrapper(id, resp) {
-            Y.log('received module response from server');
+            log('"' + data.meta.action + '" response received', data.meta.action);
             // if this is JSON data, load the JS and render data to HTML
             if (isJSON(resp)) {
-                Y.log('parsing JSON from response');
+                log('parsing JSON received for ' + data.meta.action, data.meta.action);
                 var json = Y.JSON.parse(resp.responseText),
                     rendererUrl = json.renderer;
-                Y.log('loading JS renderer: ' + rendererUrl);
+                log('loading "' + data.meta.action + '" JS renderer: ' + rendererUrl, data.meta.action);
                 Y.Get.script(rendererUrl, {
                     onSuccess: function() {
-                        Y.log(rendererUrl + ' is loaded');
+                        log(rendererUrl + ' is loaded', data.meta.action);
                         renderingCallback(json.data);
                     },
                     onFailure: function(o) {
@@ -89,12 +91,12 @@ YUI().add('ajax-module-loader', function(Y) {
             // pass the string back to the rendering callback and tell it
             // to skip the rendering
             else {
-                Y.log('got string back from response');
+                log('"' + data.meta.action + '" response contained markup string', data.meta.action);
                 renderingCallback(resp.responseText);
             }
         };
         
-        Y.log('IO call to ' + url);
+        log('executing XHR for ' + data.meta.action, data.meta.action);
         Y.io(url, ioOptions);
     }
     
@@ -120,4 +122,4 @@ YUI().add('ajax-module-loader', function(Y) {
         return ua + ', ' + platform;
 	}
     
-}, '0.1', {requires: ['io', 'oop', 'querystring-stringify', 'json-parse']});
+}, '0.1', {requires: ['io', 'oop', 'querystring-stringify', 'json-parse', 'yuiconf']});

@@ -20,9 +20,12 @@
 			
 		</div>
 		
-		<div id="doctorDetail-container"></div>
+		<div id="doctorDetail">
+			<div id="doctorDetail-container"></div>
+		</div>
 	
 		<script type="text/javascript" src="http://yui.yahooapis.com/combo?3.2.0/build/yui/yui.js"></script>
+		<g:javascript src="yuiconf.js"/>
 		<g:javascript src="ajax_module_loader.js"/>
 		<g:javascript src="doc_detail_handler.js"/>
 	
