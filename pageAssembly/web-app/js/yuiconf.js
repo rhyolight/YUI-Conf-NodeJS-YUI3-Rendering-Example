@@ -11,7 +11,7 @@ YUI({gallery: 'gallery-2010.08.04-19-46'}).add('yuiconf', function(Y) {
             bodyContent: '<ul id="demolog"></ul>',
             width       : '600px',
             zIndex      : 100,
-            xy: [200, 80],
+            xy: [200, 10],
             constrain   : true,
             render      : true,
             visible     : false,

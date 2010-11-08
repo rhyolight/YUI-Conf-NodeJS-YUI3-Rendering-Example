@@ -85,7 +85,7 @@ li {
 }
 .yui3-widget {
     background: pink;
-    padding: 20px;
+    padding: 0px 20px;
     -moz-border-radius: 20px;
     -webkit-border-radius: 20px;
     border: 2px solid black;
@@ -122,7 +122,7 @@ li {
 
 #demolog li {
     list-style: none;
-    min-height: 30px;
+    min-height: 20px;
 }
 #demolog .odd {
     background: salmon;
@@ -132,12 +132,12 @@ li {
 }
 #demolog span {
     font-weight: bold;
-    font-size: 16pt;
+    font-size: 14pt;
 }
 #demolog .arrow {
     float: right;
     clear: right;
-    font-size: 18pt;
+    font-size: 14pt;
     padding-right: 5px;
 }
 #demolog .ajax-module-loader {
